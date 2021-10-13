@@ -17,13 +17,8 @@ COLUMN_PHOTOS = "photos"
 
 
 # column names of novel columns for preprocessing
-<<<<<<< HEAD:src/util.py
 COLUMN_VIRAL = "viral"
 COLUMN_MEDIA = "media"
 COLUMN_PUNCTUATION = "tweet_no_punctuation"
-=======
-COLUMN_LABEL = "label"
-COLUMN_PUNCTUATION = "tweet_no_punctuation"
 
 SUFFIX_TOKENIZED = "_tokenized"
->>>>>>> main:code/util.py
