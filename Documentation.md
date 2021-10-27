@@ -51,6 +51,8 @@ Maybe show a short example what your preprocessing does.
 #### Daytime Example
 
 adds new column based on the time the tweet was sent
+The end hours of every daytime can be changed within the `-d` or `--daytime` argument.
+By default, this is:
 0  - 6  -> night
 6  - 12 -> morning 
 12 - 18 -> afternoon
