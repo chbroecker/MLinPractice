@@ -11,7 +11,8 @@ Created on Tue Sep 28 15:55:44 2021
 
 import os, argparse, csv
 import pandas as pd
-from src.util import COLUMN_LIKES, COLUMN_RETWEETS, COLUMN_PHOTOS, COLUMN_VIDEO, COLUMN_VIRAL, COLUMN_MEDIA
+from src.util import (COLUMN_LIKES, COLUMN_RETWEETS, COLUMN_PHOTOS, 
+                        COLUMN_VIDEO, COLUMN_VIRAL, COLUMN_MEDIA, COLUMN_DAYTIME)
 
 # setting up CLI
 parser = argparse.ArgumentParser(description = "Creation of Labels")
@@ -34,6 +35,8 @@ for file_path in file_paths:
 # join all data into a single DataFrame
 df = pd.concat(dfs)
 
+df = df.reset_index()
+
 # compute new column "viral" based on likes and retweets
 df[COLUMN_VIRAL] = (args.likes_weight * df[COLUMN_LIKES] + args.retweet_weight * df[COLUMN_RETWEETS]) > args.threshold
 
@@ -42,12 +45,32 @@ df[COLUMN_MEDIA] = "None"
 df[COLUMN_MEDIA].mask(df[COLUMN_VIDEO] == 1, other="Video", inplace=True)
 df[COLUMN_MEDIA].mask(df[COLUMN_PHOTOS] != "[]", other="Photo", inplace=True)
 
+# adds new column based on the time the tweet was sent
+# 0  - 6  -> night
+# 6  - 12 -> morning 
+# 12 - 18 -> afternoon
+# 18 - 0  -> evening
+def daytime_check(time):
+    hour = int(time.split(':')[0])
+    if hour < 6:
+        return 'Night'
+    elif hour < 12:
+        return 'Morning'
+    elif hour < 18:
+        return'Afternoon'
+    elif hour <= 24:
+        return 'Evening'
+
+df[COLUMN_DAYTIME] = df["time"].apply(lambda time: daytime_check(time))
+
 # print statistics
 print("Number of tweets: {0}".format(len(df)))
 print("Viral distribution:")
 print(df[COLUMN_VIRAL].value_counts(normalize = True))
 print("Media distribution:")
 print(df[COLUMN_MEDIA].value_counts(normalize = True))
+print("Day period distribution")
+print(df[COLUMN_DAYTIME].value_counts(normalize = True))
 
 # store the DataFrame into a csv file
 df.to_csv(args.output_file, index = False, quoting = csv.QUOTE_NONNUMERIC, line_terminator = "\n")
