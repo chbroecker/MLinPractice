@@ -7,6 +7,11 @@ that.
 The following structure thus only covers preprocessing, feature extraction,
 dimensionality reduction, classification, and evaluation.
 
+# Major pipeline changes
+Due to major errors in executing the pipeline on my Linux Machine, I had to
+change the folder name of `code` into `src`. Therefore, I had to change some
+bash commands accordingly.
+
 ## Evaluation
 
 ### Design Decisions
