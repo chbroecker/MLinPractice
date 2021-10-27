@@ -38,6 +38,12 @@ things (depending on what you do, that may be better structured).
 Which kind of preprocessing steps did you implement? Why are they necessary
 and/or useful down the road?
 
+We have grouped the different media columns (namely `photos` and `video`) into 
+one `media` column. This works because Twitter does not allow you to have both
+a video and a photo.
+This column has 3 labels: `None`, `Video` and `Photo`. 
+Now it is a categorical feature instead of being only a string before.
+
 ### Results
 
 Maybe show a short example what your preprocessing does.
