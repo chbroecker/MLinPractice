@@ -22,11 +22,13 @@ parser.add_argument("output_file", help="path to the output csv file")
 parser.add_argument("-l", '--likes_weight', type=int, help="weight of likes", default=1)
 parser.add_argument("-r", '--retweet_weight', type=int, help="weight of retweets", default=1)
 parser.add_argument("-t", '--threshold', type=int, help="threshold to surpass for positive class", default=50)
-parser.add_argument("-m", '--mediafile', help="which kind of media file is attached, photo, video or none")
+parser.add_argument("-m", '--mediafile', type = str, choices = ['photo', 'video', 'both', 'none'],
+                    help = "which media file to look at, 'photo', 'video, 'both' or 'none'", default = "both")
 parser.add_argument("-ne", '--night_end', type=int, help="defines end of the night", default=6)
 parser.add_argument("-me", '--morning_end', type=int, help="defines end of the morning", default=12)
 parser.add_argument("-ae", '--afternoon_end', type=int, help="defines end of the afternoon", default=18)
 parser.add_argument("-ee", '--evening_end', type=int, help="defines end of the evening", default=24)
+
 args = parser.parse_args()
 
 # get all csv files in data_directory
@@ -47,8 +49,12 @@ df[COLUMN_VIRAL] = (args.likes_weight * df[COLUMN_LIKES] + args.retweet_weight *
 
 # adds new column based on video and photo existence
 df[COLUMN_MEDIA] = "None"
-df[COLUMN_MEDIA].mask(df[COLUMN_VIDEO] == 1, other="Video", inplace=True)
-df[COLUMN_MEDIA].mask(df[COLUMN_PHOTOS] != "[]", other="Photo", inplace=True)
+if args.mediafile == "video" or args.mediafile == "both":
+    df[COLUMN_MEDIA].mask(df[COLUMN_VIDEO] == 1, other="Video", inplace=True)
+    df[COLUMN_MEDIA].mask(df[COLUMN_PHOTOS] != "[]", other="None", inplace=True)
+if args.mediafile == "photo" or args.mediafile == "both":
+    df[COLUMN_MEDIA].mask(df[COLUMN_PHOTOS] != "[]", other="Photo", inplace=True)
+
 
 # adds new column based on the time the tweet was sent
 periodizer = DayPeriodizer(args.night_end, args.morning_end, args.afternoon_end, args.evening_end)
@@ -58,10 +64,11 @@ df[COLUMN_DAYPERIOD] = df["time"].apply(lambda time: periodizer.day_periodize(ti
 print("Number of tweets: {0}".format(len(df)))
 print("Viral distribution:")
 print(df[COLUMN_VIRAL].value_counts(normalize=True))
-print("Media distribution:")
+print("Media distribution for " + args.mediafile)
 print(df[COLUMN_MEDIA].value_counts(normalize=True))
 print("Day period distribution")
 print(df[COLUMN_DAYPERIOD].value_counts(normalize=True))
+
 
 # store the DataFrame into a csv file
 df.to_csv(args.output_file, index=False, quoting=csv.QUOTE_NONNUMERIC, line_terminator="\n")
