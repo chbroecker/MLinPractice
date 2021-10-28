@@ -10,7 +10,7 @@ Created on Wed Sep 29 14:23:48 2021
 
 import argparse, pickle
 from sklearn.dummy import DummyClassifier
-from sklearn.metrics import accuracy_score, cohen_kappa_score, precision_score, f1_score, recall
+from sklearn.metrics import accuracy_score, cohen_kappa_score, precision_score, f1_score, recall_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import make_pipeline
@@ -102,11 +102,14 @@ if args.precision:
 if args.precision:
     evaluation_metrics.append(("f1 score", f1_score))
 if args.precision:
-    evaluation_metrics.append(("recall", recall))
+    evaluation_metrics.append(("recall", recall_score))
 
 # compute and print them
 for metric_name, metric in evaluation_metrics:
-    metric_value = metric(data["labels"], prediction)
+    if metric_name == "precision":
+        metric_value = metric(data["labels"], prediction, zero_division = 0)
+    else:
+        metric_value = metric(data["labels"], prediction)
     print("    {0}: {1}".format(metric_name, metric_value))
     #log_metric(metric_name, metric_value)
     
