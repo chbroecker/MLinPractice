@@ -19,7 +19,7 @@ COLUMN_PHOTOS   = "photos"
 # column names of novel columns for preprocessing
 COLUMN_VIRAL = "viral"
 COLUMN_MEDIA = "media"
-COLUMN_DAYTIME  = "daytime"
+COLUMN_DAYPERIOD  = "dayperiod"
 COLUMN_PUNCTUATION = "tweet_no_punctuation"
 
 SUFFIX_TOKENIZED = "_tokenized"

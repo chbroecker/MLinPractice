@@ -12,7 +12,8 @@ Created on Tue Sep 28 15:55:44 2021
 import os, argparse, csv
 import pandas as pd
 from src.util import (COLUMN_LIKES, COLUMN_RETWEETS, COLUMN_PHOTOS,
-                      COLUMN_VIDEO, COLUMN_VIRAL, COLUMN_MEDIA, COLUMN_DAYTIME)
+                      COLUMN_VIDEO, COLUMN_VIRAL, COLUMN_MEDIA, COLUMN_DAYPERIOD)
+from src.preprocessing.dayperiodizer import DayPeriodizer
 
 # setting up CLI
 parser = argparse.ArgumentParser(description="Creation of Labels")
@@ -22,9 +23,10 @@ parser.add_argument("-l", '--likes_weight', type=int, help="weight of likes", de
 parser.add_argument("-r", '--retweet_weight', type=int, help="weight of retweets", default=1)
 parser.add_argument("-t", '--threshold', type=int, help="threshold to surpass for positive class", default=50)
 parser.add_argument("-m", '--mediafile', help="which kind of media file is attached, photo, video or none")
-parser.add_argument("-d", '--daytime', type=list, help="categorise into 'night','morning','afternoon' and "
-                                                       "`evening'. Takes the end hour for every daytime",
-                    default=[6, 12, 18, 24])
+parser.add_argument("-ne", '--night_end', type=int, help="defines end of the night", default=6)
+parser.add_argument("-me", '--morning_end', type=int, help="defines end of the morning", default=12)
+parser.add_argument("-ae", '--afternoon_end', type=int, help="defines end of the afternoon", default=18)
+parser.add_argument("-ee", '--evening_end', type=int, help="defines end of the evening", default=24)
 args = parser.parse_args()
 
 # get all csv files in data_directory
@@ -48,25 +50,9 @@ df[COLUMN_MEDIA] = "None"
 df[COLUMN_MEDIA].mask(df[COLUMN_VIDEO] == 1, other="Video", inplace=True)
 df[COLUMN_MEDIA].mask(df[COLUMN_PHOTOS] != "[]", other="Photo", inplace=True)
 
-
 # adds new column based on the time the tweet was sent
-# 0  - 6  -> night
-# 6  - 12 -> morning 
-# 12 - 18 -> afternoon
-# 18 - 0  -> evening
-def daytime_check(time, daytime_hours):
-    hour = int(time.split(':')[0])
-    if hour < daytime_hours[0]:
-        return 'Night'
-    elif hour < daytime_hours[1]:
-        return 'Morning'
-    elif hour < daytime_hours[2]:
-        return 'Afternoon'
-    elif hour <= daytime_hours[3]:
-        return 'Evening'
-
-
-df[COLUMN_DAYTIME] = df["time"].apply(lambda time: daytime_check(time, args.daytime))
+periodizer = DayPeriodizer(args.night_end, args.morning_end, args.afternoon_end, args.evening_end)
+df[COLUMN_DAYPERIOD] = df["time"].apply(lambda time: periodizer.day_periodize(time))
 
 # print statistics
 print("Number of tweets: {0}".format(len(df)))
@@ -75,7 +61,7 @@ print(df[COLUMN_VIRAL].value_counts(normalize=True))
 print("Media distribution:")
 print(df[COLUMN_MEDIA].value_counts(normalize=True))
 print("Day period distribution")
-print(df[COLUMN_DAYTIME].value_counts(normalize=True))
+print(df[COLUMN_DAYPERIOD].value_counts(normalize=True))
 
 # store the DataFrame into a csv file
 df.to_csv(args.output_file, index=False, quoting=csv.QUOTE_NONNUMERIC, line_terminator="\n")
