@@ -7,7 +7,7 @@ Created on Wed Sep 29 12:22:13 2021
 
 @author: lbechberger
 """
-
+import numpy as np
 from sklearn.base import BaseEstimator, TransformerMixin
 
 # base class for all feature extractors
@@ -54,7 +54,9 @@ class FeatureExtractor(BaseEstimator,TransformerMixin):
     # should return a numpy array
     # to be implemented by subclass!
     def _get_values(self, inputs):
-        pass
+        result = np.array(inputs)
+        result = result.reshape(-1,1)
+        return result
         
     # transform function: transforms pandas DataFrame to numpy array of feature values
     def transform(self, df):
@@ -63,5 +65,5 @@ class FeatureExtractor(BaseEstimator,TransformerMixin):
         # collect all input columns from df
         for input_col in self._input_columns:
             inputs.append(df[input_col])
-            
+
         return self._get_values(inputs)
