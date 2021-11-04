@@ -37,6 +37,6 @@ class Weekday(FeatureExtractor):
             elif weekday == "Sunday":
                 result.append([0,0,0,0,0,0,1])
             else:
-                raise Exception (f"The input does not fit a weekday, the input was:{weekday}")
+                raise Exception (f"The input does not fit a weekday, the input was: {weekday}")
         result = np.array(result)
         return result
