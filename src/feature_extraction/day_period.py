@@ -19,23 +19,21 @@ class DayPeriod(FeatureExtractor):
     def __init__(self, input_column):
         super().__init__([input_column], input_column)
 
-    # don't need to fit, so don't overwrite _set_variables()
 
-    # compute the word length based on the inputs
+    # returns 4 columns, one for each daytime
     def _get_values(self, inputs):
         result = []
         for period in np.array(inputs[0]):
             if period == "Night":
-                period_number = 0
+                period_number = [1,0,0,0]
             elif period == "Morning":
-                period_number = 1
+                period_number = [0,1,0,0]
             elif period == "Afternoon":
-                period_number = 2
+                period_number = [0,0,1,0] 
             elif period == "Evening":
-                period_number = 3
+                period_number = [0,0,1,0]
             else:
-                raise Exception("The day period is not defined, it was: {}".format(period))
+                raise Exception(f"The day period is not defined, it was: {period}")
             result.append(period_number)
         result = np.array(result)
-        result = result.reshape(-1, 1)
         return result

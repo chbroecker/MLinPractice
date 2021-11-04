@@ -19,19 +19,17 @@ class MediaType(FeatureExtractor):
     def __init__(self, input_column):
         super().__init__([input_column], "media_type")
 
-    # don't need to fit, so don't overwrite _set_variables()
 
-    # compute the word length based on the inputs
+    # returns 3 columns, one for each media type
     def _get_values(self, inputs):
         result = []
         for media in np.array(inputs[0]):
             if media == "Photo":
-                media_number = 1
+                media_number = [1,0,0]
             elif media == "Video":
-                media_number = 2
+                media_number = [0,1,0]
             else:
-                media_number = 0
+                media_number = [0,0,1]
             result.append(media_number)
         result = np.array(result)
-        result = result.reshape(-1, 1)
         return result
