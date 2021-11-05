@@ -8,6 +8,7 @@ Author: LDankert
 import unittest
 from src.feature_extraction.day_period import DayPeriod
 
+
 class DayPeriodTest(unittest.TestCase):
 
     def setUp(self):
@@ -31,6 +32,7 @@ class DayPeriodTest(unittest.TestCase):
 
     def test_feature_name(self):
         self.assertEqual(self.dayperioder.get_feature_name(), self.INPUT_COLUMN)
+
 
 if __name__ == '__main__':
     unittest.main()

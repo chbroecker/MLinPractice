@@ -9,6 +9,7 @@ import unittest
 import pandas as pd
 from src.feature_extraction.media_type import MediaType
 
+
 class MediaTypeFeatureTest(unittest.TestCase):
 
     def setUp(self):
@@ -27,6 +28,7 @@ class MediaTypeFeatureTest(unittest.TestCase):
 
     def test_feature_name(self):
         self.assertEqual(self.mediatyper.get_feature_name(), "media_type")
+
 
 if __name__ == '__main__':
     unittest.main()
