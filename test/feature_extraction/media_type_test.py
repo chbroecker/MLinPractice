@@ -14,7 +14,7 @@ from src.feature_extraction.media_type import MediaType
 class MediaTypeFeatureTest(unittest.TestCase):
 
     def setUp(self):
-        self.INPUT_COLUMN = [COLUMN_PHOTOS,COLUMN_PHOTOS]
+        self.INPUT_COLUMN = [COLUMN_PHOTOS,COLUMN_VIDEO]
         self.inputs = [["link","[]","link2","[]", "Shitlink","[]","[]","[]","[]"],[1,1,0,0,1,0,0,1,0]]
         self.expected_outputs = [[1,0,0],[0,1,0],[1,0,0],[0,0,1],[1,0,0],[0,0,1],[0,0,1],[0,1,0],[0,0,1]]
         self.mediatyper = MediaType(self.INPUT_COLUMN)
