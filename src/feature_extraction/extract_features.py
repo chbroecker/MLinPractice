@@ -71,7 +71,7 @@ else:    # need to create FeatureCollector manually
 feature_array = feature_collector.transform(df)
 
 # get label array
-label_array = np.array(df[COLUMN_VIRAL])
+label_array = np.array(df[COLUMN_LABEL])
 label_array = label_array.reshape(-1, 1)
 
 # store the results
@@ -82,7 +82,7 @@ with open(args.output_file, 'wb') as f_out:
 
 # Print the extracted feature names
 if args.verbose:
-    print("List of extracted feature:\n"
+    print("List of extracted features:\n"
           + str(results.get("feature_names")))
 
 # export the FeatureCollector as pickle file if desired by user
