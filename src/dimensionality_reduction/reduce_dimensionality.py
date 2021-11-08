@@ -22,7 +22,7 @@ parser.add_argument("output_file", help = "path to the output pickle file")
 parser.add_argument("-e", "--export_file", help = "create a pipeline and export to the given location", default = None)
 parser.add_argument("-i", "--import_file", help = "import an existing pipeline from the given location", default = None)
 parser.add_argument("-m", "--mutual_information", type = int, help = "select K best features with Mutual Information", default = None)
-parser.add_argument("-pca", help = "Principal component analysis, n_componentns = 'mle' or float between 0 and 1", default = None)
+parser.add_argument("-pca", help = "Principal component analysis, n_components = 'mle' or float between 0 and 1", default = None)
 parser.add_argument("--verbose", action = "store_true", help = "print information about feature selection process")
 args = parser.parse_args()
 
