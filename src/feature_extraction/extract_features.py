@@ -17,7 +17,7 @@ from src.feature_extraction.day_period import DayPeriod
 from src.feature_extraction.weekday import Weekday
 from src.feature_extraction.feature_collector import FeatureCollector
 from src.feature_extraction.feature_extractor import FeatureExtractor
-from src.util import COLUMN_TWEET, COLUMN_VIRAL, COLUMN_PHOTOS, COLUMN_VIDEO, COLUMN_TIME, COLUMN_DATE
+from src.util import COLUMN_TWEET, COLUMN_LABEL, COLUMN_PHOTOS, COLUMN_VIDEO, COLUMN_TIME, COLUMN_DATE
 
 
 # setting up CLI
