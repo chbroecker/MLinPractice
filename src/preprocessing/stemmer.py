@@ -23,7 +23,7 @@ class Stemmer(Preprocessor):
     
     def _get_values(self, inputs):
         """Stemmes the tweet."""
-        
+        print("\tStemmer")
         stemmed = []
         ps = PorterStemmer()
         for tweet in inputs[0]:

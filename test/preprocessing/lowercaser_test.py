@@ -30,15 +30,14 @@ class LowercaserTest(unittest.TestCase):
         self.assertEqual(self.lowercaser._output_column, self.OUTPUT_COLUMN)
 
     def test_tokenization_single_sentence(self):
-        input_text = [["['ThiS', 'IS', 'aN', 'EXaMPle', 'SenTeNce']"], ["This Is aN exAMPle senTEnce"]]
-        output_text = [["['this', 'is', 'an', 'example', 'sentence']"], ['this is an example sentence']]
+        input_text = "This Is aN exAMPle senTEnce"
+        output_text = "this is an example sentence"
 
-        for input_text, output_text in zip(input_text,output_text):
-            input_df = pd.DataFrame()
-            input_df[self.INPUT_COLUMN] = [input_text]
+        input_df = pd.DataFrame()
+        input_df[self.INPUT_COLUMN] = [input_text]
 
-            lowercaser = self.lowercaser.fit_transform(input_df)
-            self.assertEqual(lowercaser[self.OUTPUT_COLUMN][0], output_text)
+        lowercaser = self.lowercaser.fit_transform(input_df)
+        self.assertEqual(lowercaser[self.OUTPUT_COLUMN][0], output_text)
 
 
 if __name__ == '__main__':

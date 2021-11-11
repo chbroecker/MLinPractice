@@ -22,9 +22,9 @@ class Lowercaser(Preprocessor):
     
     def _get_values(self, inputs):
         """Lowercase the tweet."""
-        
+        print("\tLowercaser")
         lowercased = []
         for tweet in inputs[0]:
-            lowercased.append([word.lower() for word in tweet])
+            lowercased.append(tweet.lower())
+
         return lowercased
-        

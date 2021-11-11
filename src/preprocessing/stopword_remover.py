@@ -23,6 +23,7 @@ class StopwordRemover(Preprocessor):
     def _get_values(self, inputs):
         """Remove the stopwords, inputs have to be lowercase and tokenized"""
 
+        print("\tStopwordRemover")
         stop_words = set(stopwords.words('english'))
         
         filtered_tweets = []

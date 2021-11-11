@@ -18,6 +18,7 @@ from src.preprocessing.lowercaser import Lowercaser
 from src.preprocessing.stemmer import Stemmer
 from src.util import COLUMN_TWEET, COLUMN_TWEET_CLEANED
 
+
 # setting up CLI
 parser = argparse.ArgumentParser(description = "Various preprocessing steps")
 parser.add_argument("input_file", help = "path to the input csv file")
@@ -33,8 +34,8 @@ df = pd.read_csv(args.input_file, quoting = csv.QUOTE_NONNUMERIC, lineterminator
 preprocessors = []
 if args.clean:
     preprocessors.append(PunctuationRemover(COLUMN_TWEET, COLUMN_TWEET_CLEANED))
-    preprocessors.append(Tokenizer(COLUMN_TWEET_CLEANED, COLUMN_TWEET_CLEANED))
     preprocessors.append(Lowercaser(COLUMN_TWEET_CLEANED, COLUMN_TWEET_CLEANED))
+    preprocessors.append(Tokenizer(COLUMN_TWEET_CLEANED, COLUMN_TWEET_CLEANED))
     preprocessors.append(StopwordRemover(COLUMN_TWEET_CLEANED, COLUMN_TWEET_CLEANED))
     preprocessors.append(Stemmer(COLUMN_TWEET_CLEANED, COLUMN_TWEET_CLEANED))
 

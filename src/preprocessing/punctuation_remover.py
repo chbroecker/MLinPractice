@@ -28,5 +28,6 @@ class PunctuationRemover(Preprocessor):
     # get preprocessed column based on data frame and internal variables
     def _get_values(self, inputs):
         # replace punctuation with empty string
+        print("\tPunctuationRemover")
         column = inputs[0].str.replace(self._punctuation, "")
         return column
