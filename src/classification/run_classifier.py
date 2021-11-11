@@ -118,7 +118,6 @@ else:   # manually set up a classifier
         cnb_classifier = ComplementNB()
         classifier = make_pipeline(scaler, cnb_classifier)
 
-
     elif args.mlp:
         # multi layer perceptron classifier
         # print(f"    MLP classifier  {args.lsvm}")
