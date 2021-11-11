@@ -21,7 +21,7 @@ class StopwordRemover(Preprocessor):
     # don't need to implement _set_variables(), since no variables to set
     
     def _get_values(self, inputs):
-        """Remove the stopwords"""
+        """Remove the stopwords, inputs have to be lowercase and tokenized"""
 
         stop_words = set(stopwords.words('english'))
         

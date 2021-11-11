@@ -10,8 +10,9 @@ Created on Thu Nov 09 19:50:23 2021
 
 from src.preprocessing.preprocessor import Preprocessor
 import nltk
+from nltk.stem import PorterStemmer
 
-class Lowercaser(Preprocessor):
+class Stemmer(Preprocessor):
     """Stemmes every word in the input string"""
     
     def __init__(self, input_column, output_column):
@@ -23,7 +24,8 @@ class Lowercaser(Preprocessor):
     def _get_values(self, inputs):
         """Stemmes the tweet."""
         
-        lowercased = []
+        stemmed = []
+        ps = PorterStemmer()
         for tweet in inputs[0]:
-            lowercased.append([word.lower() for word in tweet])
-        return lowercase
+            stemmed.append([ps.stem(word) for word in tweet])
+        return stemmed
