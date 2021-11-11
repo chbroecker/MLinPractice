@@ -13,15 +13,16 @@ import pandas as pd
 from sklearn.pipeline import make_pipeline
 from src.preprocessing.punctuation_remover import PunctuationRemover
 from src.preprocessing.tokenizer import Tokenizer
-from src.util import COLUMN_TWEET, SUFFIX_TOKENIZED
+from src.preprocessing.stopword_remover import StopwordRemover
+from src.preprocessing.lowercaser import Lowercaser
+from src.util import COLUMN_TWEET, SUFFIX_TOKENIZED, SUFFIX_LOWERCASE, SUFFIX_STEMMED, SUFFIX_STOPWORD
 
 # setting up CLI
 parser = argparse.ArgumentParser(description = "Various preprocessing steps")
 parser.add_argument("input_file", help = "path to the input csv file")
 parser.add_argument("output_file", help = "path to the output csv file")
 parser.add_argument("-p", "--punctuation", action = "store_true", help = "remove punctuation")
-parser.add_argument("-t", "--tokenize", action = "store_true", help = "tokenize given column into individual words")
-parser.add_argument("--tokenize_input", help = "input column to tokenize", default = COLUMN_TWEET)
+parser.add_argument("-c", "--clean", action="store_true", help= "Use all nltk preprocessing features")
 parser.add_argument("-e", "--export_file", help = "create a pipeline and export to the given location", default = None)
 args = parser.parse_args()
 
@@ -32,8 +33,10 @@ df = pd.read_csv(args.input_file, quoting = csv.QUOTE_NONNUMERIC, lineterminator
 preprocessors = []
 if args.punctuation:
     preprocessors.append(PunctuationRemover())
-if args.tokenize:
+if args.clean:
     preprocessors.append(Tokenizer(args.tokenize_input, args.tokenize_input + SUFFIX_TOKENIZED))
+    preprocessors.append(Lowercaser(args.tokenize_input + SUFFIX_TOKENIZED, args.tokenize_input + SUFFIX_TOKENIZED + SUFFIX_LOWERCASE))
+    preprocessors.append(StopwordRemover(args.tokenize_input + SUFFIX_TOKENIZED + SUFFIX_LOWERCASE, args.tokenize_input + SUFFIX_TOKENIZED + SUFFIX_LOWERCASE + SUFFIX_STOPWORD))
 
 # call all preprocessing steps
 for preprocessor in preprocessors:

@@ -23,3 +23,8 @@ COLUMN_LABEL = "viral"
 COLUMN_PUNCTUATION = "tweet_no_punctuation"
 
 SUFFIX_TOKENIZED = "_tokenized"
+SUFFIX_STEMMED = "_stemmed"
+SUFFIX_STOPWORD = "_removed_stopword"
+SUFFIX_LOWERCASE = "_lowercased"
+
+#clean: punctuation removal, stopword removal, lowercasing, tokenize, stem
