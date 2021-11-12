@@ -11,6 +11,7 @@ Author: LDankert
 import unittest
 from src.feature_extraction.keyword import Keyword
 
+
 class KeywordTest(unittest.TestCase):
 
     def setUp(self):
@@ -39,6 +40,7 @@ class KeywordTest(unittest.TestCase):
 
     def test_feature_name(self):
         self.assertEqual(self.keywords.get_feature_name(), "keywords")
+
 
 if __name__ == '__main__':
     unittest.main()
