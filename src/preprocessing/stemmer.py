@@ -9,7 +9,6 @@ Created on Thu Nov 09 19:50:23 2021
 """
 
 from src.preprocessing.preprocessor import Preprocessor
-import nltk
 from nltk.stem import PorterStemmer
 
 class Stemmer(Preprocessor):

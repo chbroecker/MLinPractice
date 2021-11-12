@@ -11,10 +11,10 @@ Created on Wed Sep 29 14:23:48 2021
 import argparse, pickle
 from sklearn.dummy import DummyClassifier
 from sklearn.metrics import accuracy_score, cohen_kappa_score, precision_score, f1_score, recall_score
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import LinearSVC
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import GaussianNB, ComplementNB
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import make_pipeline
 from mlflow import log_metric, log_param, set_tracking_uri
@@ -32,6 +32,7 @@ parser.add_argument("-u", "--uniform", action = "store_true", help = "uniform ra
 parser.add_argument("--knn", type = int, help = "k nearest neighbor classifier with the specified value of k", default = None)
 parser.add_argument("--lsvm", type = float, help = "linear SVM classifier with the specified regularization parameter C", default = None)
 parser.add_argument("--gnb", action = "store_true", help="gaussian naive bayes classifier")
+parser.add_argument("--cnb", action = "store_true", help="complement naive bayes classifier")
 parser.add_argument("--mlp", action = "store_true")
 parser.add_argument("-a", "--accuracy", action = "store_true", help = "evaluate using accuracy")
 parser.add_argument("-k", "--kappa", action = "store_true", help = "evaluate using Cohen's kappa")
@@ -45,7 +46,7 @@ args = parser.parse_args()
 with open(args.input_file, 'rb') as f_in:
     data = pickle.load(f_in)
 
-#set_tracking_uri(args.log_folder)
+set_tracking_uri(args.log_folder)
 
 if args.import_file is not None:
     # import a pre-trained classifier
@@ -98,7 +99,7 @@ else:   # manually set up a classifier
         log_param("C", args.lsvm)
         params = {"classifier": "lsvm", "C": args.lsvm}
         standardizer = StandardScaler()
-        lsvm_classifier = LinearSVC(C = args.lsvm, max_iter=5000)
+        lsvm_classifier = LinearSVC(C = args.lsvm, class_weight='balanced', max_iter=5000)
         classifier = make_pipeline(standardizer, lsvm_classifier)
 
     elif args.gnb:
@@ -108,15 +109,28 @@ else:   # manually set up a classifier
         params = {"classifier": "gnb"}
         classifier = GaussianNB()
 
+    elif args.cnb:
+        # naive complement bayes classifier
+        print("    complement naive bayes classifier")
+        log_param("classifier", "cnb")
+        params = {"classifier": "cnb"}
+        scaler = MinMaxScaler()
+        cnb_classifier = ComplementNB()
+        classifier = make_pipeline(scaler, cnb_classifier)
+
     elif args.mlp:
         # multi layer perceptron classifier
+        # The MLP does not currently work as the loss is still way too high.
         # print(f"    MLP classifier  {args.lsvm}")
         log_param("classifier", "mlp")
-        # log_param("C", args.lsvm)
         params = {"classifier": "mlp"}
         standardizer = StandardScaler()
-        lsvm_classifier = MLPClassifier()
-        classifier = make_pipeline(standardizer, lsvm_classifier)
+        mlp_classifier = MLPClassifier(hidden_layer_sizes=[50, 50, 50], 
+                                        verbose=True, 
+                                        solver="sgd",
+                                        learning_rate_init=0.1,
+                                        alpha=0.1)
+        classifier = make_pipeline(standardizer, mlp_classifier)
 
     classifier.fit(data["features"], data["labels"].ravel())
     log_param("dataset", "training")

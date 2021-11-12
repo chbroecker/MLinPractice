@@ -10,6 +10,7 @@ import unittest
 import pandas as pd
 from src.preprocessing.tokenizer import Tokenizer
 
+
 class TokenizerTest(unittest.TestCase):
     
     def setUp(self):
@@ -39,4 +40,3 @@ class TokenizerTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-    

@@ -20,12 +20,4 @@ COLUMN_TIME     = "time"
 
 # column names of novel columns for preprocessing
 COLUMN_LABEL = "viral"
-COLUMN_PUNCTUATION = "tweet_no_punctuation"
 COLUMN_TWEET_CLEANED = "cleaned"
-
-SUFFIX_TOKENIZED = "_tokenized"
-SUFFIX_STEMMED = "_stemmed"
-SUFFIX_STOPWORD = "_removed_stopword"
-SUFFIX_LOWERCASE = "_lowercased"
-
-#clean: punctuation removal, stopword removal, lowercasing, tokenize, stem
