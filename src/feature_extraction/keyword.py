@@ -28,30 +28,23 @@ class Keyword(FeatureExtractor):
     def _set_variables(self, inputs):
         all_tweets = []
         for tweet in inputs[0]:
-            all_tweets.append([tweet])
-            print(all_tweets)
-        #freq = nltk.FreqDist(all_tweets)
-        # returns list of tuples
-        c = Counter(all_tweets)
-        self.keywords = c.most_common(5)
-        print(self.keywords)
+            all_tweets.extend(tweet)
 
-    # returns 10 columns, one for each most common words one
+        freq = nltk.FreqDist(all_tweets)
+        self.keywords = freq.most_common(self.number_of_keywords)
+        print(f"    The {self.number_of_keywords} most common keywords:")
+        for keyword in self.keywords:
+            print(f"    {keyword[0]}: {keyword[1]}")
+
+    # returns columns, one for each most common words one
     def _get_values(self, inputs):
         result = []
         keywords = [keyword for keyword, _ in self.keywords]
         for tweet in inputs[0]:
             keywords_in_tweet = []
-            #for keyword in keywords:
-            #    if keyword in tweet:
-            #        keywords_in_tweet += [keyword]
             keywords_in_tweet += [keyword for keyword in keywords if keyword in tweet]
             result.append(keywords_in_tweet)
 
         enc = MultiLabelBinarizer()
         result = enc.fit_transform(result)
         return result
-
-#test = Keyword("test")
-#test._set_values([["re","rr","test"], ["trest22"], ["raser"]])
-#print(test._get_values([["test","test"],["trest22", "raser"], ["rr","test"]]))

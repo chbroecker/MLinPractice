@@ -36,7 +36,7 @@ parser.add_argument("--verbose", action = "store_true", help = "print informatio
 args = parser.parse_args()
 
 # load data
-df = pd.read_csv(args.input_file, quoting = csv.QUOTE_NONNUMERIC, lineterminator = "\n")
+df = pd.read_csv(args.input_file, quoting = csv.QUOTE_NONNUMERIC, lineterminator = "\n", converters={COLUMN_TWEET_CLEANED:eval})
 
 if args.import_file is not None:
     # simply import an exisiting FeatureCollector
@@ -88,7 +88,6 @@ with open(args.output_file, 'wb') as f_out:
 if args.verbose:
     print("List of extracted features:\n\t"
           + str(results.get("feature_names")))
-    print(results["features"])
 
 # export the FeatureCollector as pickle file if desired by user
 if args.export_file is not None:
