@@ -206,7 +206,7 @@ Of course these numbers are still pretty bad. Knowing that the dataset has a dis
 
 Our classification can definitely not be used in practice with these numbers!
 
-### 6 Application
+## 6 Application
 
 For our feature extraction we use meta data like the time and the date. However,
 the preimplemented application just provides an input for the tweet itself.
