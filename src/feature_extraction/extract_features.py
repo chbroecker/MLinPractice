@@ -15,9 +15,10 @@ from src.feature_extraction.character_length import CharacterLength
 from src.feature_extraction.media_type import MediaType
 from src.feature_extraction.day_period import DayPeriod
 from src.feature_extraction.weekday import Weekday
+from src.feature_extraction.keyword import Keyword
 from src.feature_extraction.feature_collector import FeatureCollector
 from src.feature_extraction.feature_extractor import FeatureExtractor
-from src.util import COLUMN_TWEET, COLUMN_LABEL, COLUMN_PHOTOS, COLUMN_VIDEO, COLUMN_TIME, COLUMN_DATE
+from src.util import COLUMN_TWEET, COLUMN_LABEL, COLUMN_PHOTOS, COLUMN_VIDEO, COLUMN_TIME, COLUMN_DATE, COLUMN_TWEET_CLEANED
 
 
 # setting up CLI
@@ -30,6 +31,7 @@ parser.add_argument("-c", "--char_length", action = "store_true", help = "comput
 parser.add_argument("-w", "--weekday", action = "store_true", help = "defines the weekday of the tweet")
 parser.add_argument("-m", "--media_type", action = "store_true", help = "defines the attached media file to the tweet")
 parser.add_argument("-d", "--day_period", action = "store_true", help = "defines the period of the day of the tweet")
+parser.add_argument("-k", "--keywords", type = int, help = "looks for the k most common words in tweet", default = None)
 parser.add_argument("--verbose", action = "store_true", help = "print information about feature selection process")
 args = parser.parse_args()
 
@@ -57,11 +59,13 @@ else:    # need to create FeatureCollector manually
     if args.day_period:
         # period of the day that the tweet was posted
         features.append(DayPeriod(COLUMN_TIME))
+    if args.keywords is not None:
+        # k most common keywords
+        features.append(Keyword(COLUMN_TWEET_CLEANED, args.keywords))
 
     # create overall FeatureCollector
     feature_collector = FeatureCollector(features)
 
-    
     # fit it on the given data set (assumed to be training data)
     feature_collector.fit(df)
 
@@ -82,8 +86,9 @@ with open(args.output_file, 'wb') as f_out:
 
 # Print the extracted feature names
 if args.verbose:
-    print("List of extracted features:\n"
+    print("List of extracted features:\n\t"
           + str(results.get("feature_names")))
+    print(results["features"])
 
 # export the FeatureCollector as pickle file if desired by user
 if args.export_file is not None:
