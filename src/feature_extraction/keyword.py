@@ -10,7 +10,7 @@ Author: LDankert
 
 
 import pandas as pd
-import nltk
+from nltk import FreqDist
 from sklearn.preprocessing import MultiLabelBinarizer
 from src.feature_extraction.feature_extractor import FeatureExtractor
 from src.util import COLUMN_LABEL, COLUMN_TWEET_CLEANED
@@ -37,7 +37,7 @@ class Keyword(FeatureExtractor):
         for tweet in cleaned_tweets:
             all_tweets.extend(tweet)
 
-        freq = nltk.FreqDist(all_tweets)
+        freq = FreqDist(all_tweets)
         self.keywords = freq.most_common(self.number_of_keywords)
         print(f"    The {self.number_of_keywords} most viral keywords:")
         for keyword in self.keywords:
