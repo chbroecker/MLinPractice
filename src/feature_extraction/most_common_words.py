@@ -10,7 +10,7 @@ Author: LDankert
 
 
 import numpy as np
-import nltk
+from nltk import FreqDist
 from sklearn.preprocessing import MultiLabelBinarizer
 from src.feature_extraction.feature_extractor import FeatureExtractor
 
@@ -29,7 +29,7 @@ class MostCommonWords(FeatureExtractor):
         for tweet in inputs[0]:
             all_tweets.extend(tweet)
 
-        freq = nltk.FreqDist(all_tweets)
+        freq = FreqDist(all_tweets)
         self.common_words = freq.most_common(self.number_of_words)
         print(f"    The {self.number_of_words} most common words:")
         for word in self.common_words:
