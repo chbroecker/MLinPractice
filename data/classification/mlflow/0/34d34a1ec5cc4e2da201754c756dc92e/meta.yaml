@@ -1,5 +1,5 @@
 artifact_uri: data/classification/mlflow/0/34d34a1ec5cc4e2da201754c756dc92e/artifacts
-end_time: null
+end_time: 1636758034752
 entry_point_name: ''
 experiment_id: '0'
 lifecycle_stage: active
@@ -10,6 +10,6 @@ source_name: ''
 source_type: 4
 source_version: ''
 start_time: 1636757608679
-status: 1
+status: 3
 tags: []
 user_id: chbroecker
