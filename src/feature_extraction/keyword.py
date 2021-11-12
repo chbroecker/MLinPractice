@@ -9,10 +9,8 @@ Author: LDankert
 """
 
 
-import numpy as np
 import pandas as pd
 import nltk
-from collections import Counter
 from sklearn.preprocessing import MultiLabelBinarizer
 from src.feature_extraction.feature_extractor import FeatureExtractor
 from src.util import COLUMN_LABEL, COLUMN_TWEET_CLEANED
