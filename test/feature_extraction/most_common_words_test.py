@@ -11,6 +11,7 @@ Author: LDankert
 import unittest
 from src.feature_extraction.most_common_words import MostCommonWords
 
+
 class MostCommonWordsTest(unittest.TestCase):
 
     def setUp(self):
@@ -36,6 +37,7 @@ class MostCommonWordsTest(unittest.TestCase):
 
     def test_feature_name(self):
         self.assertEqual(self.most_common_word.get_feature_name(), "most_common_words")
+
 
 if __name__ == '__main__':
     unittest.main()
